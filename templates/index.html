@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face and Hand Gesture Detection</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Basic body styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Header styling */
+        h1 {
+            color: #4CAF50;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        /* Styling for the video feed */
+        .video-container {
+            position: relative;
+            max-width: 100%;
+            border: 5px solid #4CAF50;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        .video-container img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        /* Footer styling */
+        footer {
+            margin-top: 20px;
+            color: #555;
+            font-size: 1rem;
+        }
+
+        /* Button style */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .action-buttons button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .action-buttons button:hover {
+            background-color: #45a049;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .video-container {
+                width: 100%;
+                height: auto;
+            }
+
+            .action-buttons button {
+                font-size: 0.9rem;
+                padding: 8px 16px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Face and Hand Gesture Tracker</h1>
+
+    <div class="video-container">
+        <img src="{{ url_for('video_feed') }}" alt="Video Feed">
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Face and Hand Gesture Detection. All rights reserved.</p>
+    </footer>
+</body>
+</html>
