@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Face and Hand Gesture Detection</title>
+    <title>Face and Stress Detection</title>
+    <script src="https://cdn.socket.io/4.5.0/socket.io.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -11,7 +14,6 @@
             box-sizing: border-box;
         }
 
-        /* Basic body styling */
         body {
             font-family: 'Arial', sans-serif;
             background-color: #f4f4f9;
@@ -22,40 +24,59 @@
             height: 100vh;
             color: #333;
             text-align: center;
-            padding: 20px;
+            padding: 10px;
         }
 
-        /* Header styling */
         h1 {
-            color: #4CAF50;
-            font-size: 2.5rem;
+            color: #2196f3;
+            font-size: 2.50rem;
             margin-bottom: 20px;
         }
 
-        /* Styling for the video feed */
+        h2 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #2196f3;
+        }
+
         .video-container {
             position: relative;
-            max-width: 100%;
-            border: 5px solid #4CAF50;
+            max-width: 600px;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border: 5px solid #4fd0ea;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             border-radius: 10px;
             overflow: hidden;
             background-color: #000;
+            margin-bottom: 20px;
         }
 
         .video-container img {
             width: 100%;
+            height: auto;
             border-radius: 10px;
         }
 
-        /* Footer styling */
-        footer {
+        .status {
             margin-top: 20px;
-            color: #555;
-            font-size: 1rem;
+            font-size: 1.2rem;
+            color: #424242;
         }
 
-        /* Button style */
+        #timer {
+            font-size: 1.5rem;
+            color: #e53935;
+            font-weight: 600;
+        }
+
+        footer {
+            margin-top: 20px;
+            color: #757575;
+            font-size: 0.9rem;
+        }
+
         .action-buttons {
             display: flex;
             justify-content: center;
@@ -63,53 +84,81 @@
         }
 
         .action-buttons button {
-            padding: 10px 20px;
-            margin: 5px;
+            padding: 12px 25px;
+            margin: 10px;
             border: none;
-            background-color: #4CAF50;
+            background: #2196f3;
             color: white;
             font-size: 1rem;
-            border-radius: 5px;
+            font-weight: 600;
+            border-radius: 8px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, transform 0.2s;
         }
 
         .action-buttons button:hover {
-            background-color: #45a049;
+            background: #1976d2;
+            transform: scale(1.05);
         }
 
-        /* Responsive design */
         @media (max-width: 768px) {
-            body {
-                padding: 10px;
-            }
-
             h1 {
                 font-size: 2rem;
             }
 
-            .video-container {
-                width: 100%;
-                height: auto;
+            .status {
+                font-size: 1rem;
+            }
+
+            #timer {
+                font-size: 1.2rem;
             }
 
             .action-buttons button {
                 font-size: 0.9rem;
-                padding: 8px 16px;
+                padding: 10px 20px;
             }
         }
-
     </style>
 </head>
 <body>
-    <h1>Face and Hand Gesture Tracker</h1>
+    <h1>Face and Stress Detection</h1>
+    <h2>By RelaxEducare</h2>
 
     <div class="video-container">
         <img src="{{ url_for('video_feed') }}" alt="Video Feed">
     </div>
 
+    <div class="status">
+        <p id="status">{{ status }}</p>
+        <p id="level">Stress Level: {{ level }}%</p>
+        <p id="timer">Time Remaining: <span id="time-remaining">5</span> seconds</p>
+    </div>
+
     <footer>
-        <p>&copy; 2024 Face and Hand Gesture Detection. All rights reserved.</p>
+        <p>&copy; 2024 Face and Stress Detection. All rights reserved.</p>
     </footer>
+
+    <script>
+        var socket = io();
+        var timer = 5;
+
+        socket.on('status_update', function(data) {
+            document.getElementById("status").innerText = data.status;
+            document.getElementById("level").innerText = "Stress Level: " + data.level + "%";
+            timer = data.timer;
+            document.getElementById("time-remaining").innerText = timer.toString();
+        });
+
+        function countdown() {
+            if (timer > 0) {
+                timer--;
+                document.getElementById("time-remaining").innerText = timer.toString();
+            }
+        }
+
+        setInterval(countdown, 1000);
+    </script>
 </body>
 </html>
+
